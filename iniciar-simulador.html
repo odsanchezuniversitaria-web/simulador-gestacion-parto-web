@@ -99,7 +99,7 @@
 
         // To lower canvas resolution on mobile devices to gain some
         // performance, uncomment the following line:
-        // config.devicePixelRatio = 1;
+        config.devicePixelRatio = 1;
 
 
       } else {
@@ -109,12 +109,17 @@
       }
 
       document.querySelector("#unity-loading-bar").style.display = "block";
+      var loadingText = document.createElement("div");
+      loadingText.style.cssText = "color:#e8fbff;text-align:center;margin-top:14px;font:600 14px Arial,sans-serif";
+      loadingText.textContent = "Preparando simulador… 0%";
+      document.querySelector("#unity-loading-bar").appendChild(loadingText);
 
       var script = document.createElement("script");
       script.src = loaderUrl;
       script.onload = () => {
         createUnityInstance(canvas, config, (progress) => {
           document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
+          loadingText.textContent = "Preparando simulador… " + Math.round(progress * 100) + "%";
               }).then((unityInstance) => {
                 document.querySelector("#unity-loading-bar").style.display = "none";
                 document.querySelector("#unity-fullscreen-button").onclick = () => {
